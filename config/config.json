@@ -2,10 +2,10 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "dating",
+    "database": "shopping",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "port":"3307"
+    "port":"3306"
   },
 
   "production": {
