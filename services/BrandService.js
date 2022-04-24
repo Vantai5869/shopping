@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Brand } = require(__basedir + '/models');
 
 class UserService {
@@ -17,17 +18,16 @@ class UserService {
   // Get All Brands
   getAll = async (req, res) => {
     if (! req.user) res.sendStatus(403);
-    const { page, limit, search} = req.query;
+    const { page=0, limit=10, search=''} = req.query;
     try {
       const brands = await Brand.findAndCountAll({
         where: {
-          username: { [Op.like]: `%${search}%` },
+          brandName: { [Op.like]: `%${search}%` },
         },
         offset: +(limit * page),
         limit: +limit,
       });
-
-      res.status(200).send({ brands: brands });
+      return res.status(200).send({ brands: brands });
     }
     catch (err) {
       console.log(err);
@@ -38,22 +38,23 @@ class UserService {
 
   // Create Brand
   create = async (req, res) => {
-    if (! req.user) res.sendStatus(403);
+    if (! req.user) return res.sendStatus(403);
     const body = req.body;
 
     // Create Brand
     try {  
       const brand = await Brand.create(body);
-      res.status(200).send({ brand: brand });
+      return res.status(200).send({ brand: brand });
     }
     catch (err) {
       // Send Error
-      if (err) res.status(403).send({ error: err });
+      if (err) return res.status(403).send({ error: err });
     }
   }
 
   // Update Brand
   update = async (req, res) => {
+    console.log('ss')
     if (! req.user) res.sendStatus(403);
     const body = req.body;
     try {  
