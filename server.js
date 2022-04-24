@@ -16,7 +16,6 @@ const { sequelize } = require(__basedir + '/models');
 
 // Declaring Modules
 const express = require('express');
-const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -38,15 +37,6 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Session
-app.use(session({
-    key: "accessToken",
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        expires: 1000 * 60 * 60 * 24
-    }
-}));
 
 /** IMPORT ROUTES */
 

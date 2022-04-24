@@ -1,6 +1,5 @@
 const { Op } = require("sequelize");
 const { Brand } = require(__basedir + '/models');
-
 class UserService {
 
   get = async (req, res) => {

@@ -10,8 +10,8 @@ const AuthService = require(__basedir + '/services/AuthService');
 // Register Route
 router.post('/register', AuthService.register);
 
-// // Login Route
-// router.post('/login', AuthService.login);
+// Login Route
+router.post('/login', AuthService.login);
 
 // // Authenticated Route
 // router.get('/authenticate', AuthService.authenticate);
