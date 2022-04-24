@@ -52,15 +52,11 @@ app.use(session({
 
 // authentication route
 const rAuth = require(__basedir + '/routes/auth');
-const rUser = require(__basedir + '/routes/user');
-const rRole = require(__basedir + '/routes/role');
 
 /** ROUTES */
 
 // authentication route middleware
 app.use('/api/auth', rAuth);
-app.use('/api/user', rUser);
-app.use('/api/role', rRole);
 
 /** RUN THE API ON PORT */
 app.listen(process.env.PORT||5000, async () => {
