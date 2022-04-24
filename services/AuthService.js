@@ -1,103 +1,63 @@
-/**
- * Service - AuthService
- * A Service Helper that handles the Authorization of Users
- */
 
-const { User } = require(__basedir + '/models');
+const db = require('./../models/index')
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const saltRounds = 10;
 
-class AuthService {
-    // register user
-    register = async (req, res) => {
-        const { username, fullname, email, password, confirm_password, role, parent_uuid } = req.body;
+const register = async (req, res) => {
 
-        try {
-            const parent = await User.findOne({ where: { uuid: parent_uuid } });
-
-            // Validate Confirmed Password
-            if (password != confirm_password) throw [{ message: 'passwords must match' }];
-
-            // Hashing
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-
-            // Build Arguments
-            const args = {
-                fullname: fullname,
-                username: username,
-                email: email,
-                password: hashedPassword,
-                role: role
-            };
-
-            if (parent) args.parent_id = parent.id;
-
-            // Create User
-            const user = await User.create(args);
-
-            // Send Response
-            res.status(200).send(user);
-        } catch (err) {
-            // Send Error
-            if (err.errors) res.status(400).send(err.errors);
-            else res.status(400).send(err);
+    try {
+        const { fullName, email, password, phoneNumber, address, role } = req.body;
+        const datauser = await db.User.findOne({ where: { email } });
+        if (datauser) {
+            return res.status(401).json({message:"email của bạn đã tồn tại trong hệ thống"}) 
         }
+        const hasspassword = await bcrypt.hash(password, saltRounds)
+        const roleEmail = role ? role : 'user'
+        await db.User.create({
+            fullName,
+            email,
+            password: hasspassword,
+            phoneNumber,
+            address,
+            role :roleEmail
+        })
+
+        return res.json({ message: "Tạo tài khoản thành công" })
+
+    } catch (err) {
+        return res.status(500).json({message:error.message}) 
     }
-
-    // login user
-    login = async (req, res) => {
-        const { username, password } = req.body;
-
-        try {
-            // Find User by Username
-            const user = await User.findOne({ where: { username: username }});
-            
-            // Check If User Exists
-            if (user == null) throw [{ message: "user doesn't exist or password entered is invalid." }];
-
-            // Check If Password Matches
-            const validPassword = await bcrypt.compare(password, user.password);
-            if (! validPassword) throw [{ message: "user doesn't exist or password entered is invalid." }];
-
-            // Create Access and Refresh Token
-            const accessToken = this.generateAccessToken(user);
-
-            // Store AccessToken in Session
-            req.session.accessToken = accessToken;
-
-            res.status(200).send({
-                user: user
-            });
+} 
+    
+const login = async(req,res)=>{
+    try {
+        let { email, password } = req.body; 
+        const datauser =  await db.User.findOne({ where: { email } });
+        if(!datauser){
+            return res.status(401).json({message:"email của bạn không tồn tại trong hệ thống"}) 
         }
-        catch (err) {
-            res.status(400).send(err);
+        const passwordb =  datauser.password
+        const isMatch = await bcrypt.compare(password ,passwordb )
+        if(!isMatch) 
+        return res.status(401).json({message:"mật khẩu  của bạn sai"}) 
+        const accesstoken = createAccessToken({email})
+        const data  = {
+            token:accesstoken,
+            role:datauser.role,
+            name:datauser.name,
+          
         }
+        return  reply.code(200).send(BaseService.SUCCESS( null ,JSON.stringify( data)));
+
+    } catch (err) {
+        throw boom.boomify(err);  
     }
 
-    authenticate = (req, res) => {
-        const accessToken = req.session.accessToken;
 
-        if (accessToken == null) return res.sendStatus(401);
-
-        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async (err, uuid) => {
-            if (err) return res.sendStatus(403);
-
-            res.status(200).send('user logged in');
-        });
-    }
-
-    // logout user
-    logout = (req, res) => {
-        req.session.accessToken = null;
-
-        return res.status(200).send('user logged out');
-    }
-
-    // Generate an Access Token
-    generateAccessToken = (user) => {
-        return jwt.sign({ uuid: user.uuid }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' });
-    }
+   
 }
 
-module.exports = new AuthService();
+module.exports = {
+    register,
+    login
+};
