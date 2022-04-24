@@ -1,24 +1,21 @@
 const { Op } = require("sequelize");
-const { Brand, Type } = require(__basedir + '/models');
-class BrandService {
+const { InvoiceDetail, Type } = require(__basedir + '/models');
+class InvoiceDetailService {
     get = async (req, res) => {
         const { id } = req.params;
         try {
-            const brand = await Brand.findOne({ where: { id: id } });
-            res.status(200).send({ brand: brand });
+            const invoice = await InvoiceDetail.findOne({ where: { id: id } });
+            res.status(200).send({ invoice: invoice });
         } catch (err) {
             if (err) res.status(403).send({ error: err });
         }
     };
 
-    // Get All Brands
+    // Get All InvoiceDetails
     getAll = async (req, res) => {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
-            const brands = await Brand.findAndCountAll({
-                where: {
-                    brandName: { [Op.like]: `%${search}%` },
-                },
+            const invoices = await InvoiceDetail.findAndCountAll({
                 offset: +(limit * page),
                 limit: +limit,
                 include:[
@@ -26,7 +23,7 @@ class BrandService {
                       model: Type,
                   }],
             });
-            return res.status(200).send({ brands: brands });
+            return res.status(200).send({ invoices: invoices });
         } catch (err) {
             console.log(err);
             // Send Error
@@ -34,27 +31,27 @@ class BrandService {
         }
     };
 
-    // Create Brand
+    // Create InvoiceDetail
     create = async (req, res) => {
         const body = req.body;
 
-        // Create Brand
+        // Create InvoiceDetail
         try {
-            const brand = await Brand.create(body);
-            return res.status(200).send({ brand: brand });
+            const invoice = await InvoiceDetail.create(body);
+            return res.status(200).send({ invoice: invoice });
         } catch (err) {
             // Send Error
             if (err) return res.status(403).send({ error: err });
         }
     };
 
-    // Update Brand
+    // Update InvoiceDetail
     update = async (req, res) => {
         const body = req.body;
         try {
-            const brand = await Brand.update(body, { where: { id: body.id } });
+            const invoice = await InvoiceDetail.update(body, { where: { id: body.id } });
 
-            return res.status(200).send({ brand: brand });
+            return res.status(200).send({ invoice: invoice });
         } catch (err) {
             // Send Error
             return res.status(403).send({ error: err });
@@ -62,4 +59,4 @@ class BrandService {
     };
 }
 
-module.exports = new BrandService();
+module.exports = new InvoiceDetailService();

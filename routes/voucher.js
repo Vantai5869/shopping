@@ -1,14 +1,14 @@
  const router = require('express').Router();
- const BrandService = require('../services/BrandService');
+ const VoucherService = require('../services/VoucherService');
  const authMiddleware = require('../middlewares/authMiddleware')
  
- router.get('/all',authMiddleware, BrandService.getAll);
+ router.get('/all',authMiddleware, VoucherService.getAll);
  
- router.get('/:id',authMiddleware, BrandService.get);
+ router.get('/:id',authMiddleware, VoucherService.get);
  
- router.post('/create',authMiddleware, BrandService.create);
+ router.post('/create',authMiddleware, VoucherService.create);
  
- router.post('/update',authMiddleware, BrandService.update);
+ router.post('/update',authMiddleware, VoucherService.update);
  
  module.exports = router;
 

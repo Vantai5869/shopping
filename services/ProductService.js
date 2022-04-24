@@ -1,32 +1,28 @@
 const { Op } = require("sequelize");
-const { Brand, Type } = require(__basedir + '/models');
-class BrandService {
+const { Product } = require(__basedir + '/models');
+class ProductService {
     get = async (req, res) => {
         const { id } = req.params;
         try {
-            const brand = await Brand.findOne({ where: { id: id } });
-            res.status(200).send({ brand: brand });
+            const product = await Product.findOne({ where: { id: id } });
+            res.status(200).send({ product: product });
         } catch (err) {
             if (err) res.status(403).send({ error: err });
         }
     };
 
-    // Get All Brands
+    // Get All Products
     getAll = async (req, res) => {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
-            const brands = await Brand.findAndCountAll({
+            const products = await Product.findAndCountAll({
                 where: {
-                    brandName: { [Op.like]: `%${search}%` },
+                    productName: { [Op.like]: `%${search}%` },
                 },
                 offset: +(limit * page),
                 limit: +limit,
-                include:[
-                  {
-                      model: Type,
-                  }],
             });
-            return res.status(200).send({ brands: brands });
+            return res.status(200).send({ products: products });
         } catch (err) {
             console.log(err);
             // Send Error
@@ -34,27 +30,27 @@ class BrandService {
         }
     };
 
-    // Create Brand
+    // Create Product
     create = async (req, res) => {
         const body = req.body;
 
-        // Create Brand
+        // Create Product
         try {
-            const brand = await Brand.create(body);
-            return res.status(200).send({ brand: brand });
+            const product = await Product.create(body);
+            return res.status(200).send({ product: product });
         } catch (err) {
             // Send Error
             if (err) return res.status(403).send({ error: err });
         }
     };
 
-    // Update Brand
+    // Update Product
     update = async (req, res) => {
         const body = req.body;
         try {
-            const brand = await Brand.update(body, { where: { id: body.id } });
+            const product = await Product.update(body, { where: { id: body.id } });
 
-            return res.status(200).send({ brand: brand });
+            return res.status(200).send({ product: product });
         } catch (err) {
             // Send Error
             return res.status(403).send({ error: err });
@@ -62,4 +58,4 @@ class BrandService {
     };
 }
 
-module.exports = new BrandService();
+module.exports = new ProductService();

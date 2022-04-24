@@ -1,32 +1,28 @@
 const { Op } = require("sequelize");
-const { Brand, Type } = require(__basedir + '/models');
-class BrandService {
+const { Voucher } = require(__basedir + '/models');
+class VoucherService {
     get = async (req, res) => {
         const { id } = req.params;
         try {
-            const brand = await Brand.findOne({ where: { id: id } });
-            res.status(200).send({ brand: brand });
+            const voucher = await Voucher.findOne({ where: { id: id } });
+            res.status(200).send({ voucher: voucher });
         } catch (err) {
             if (err) res.status(403).send({ error: err });
         }
     };
 
-    // Get All Brands
+    // Get All Vouchers
     getAll = async (req, res) => {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
-            const brands = await Brand.findAndCountAll({
+            const vouchers = await Voucher.findAndCountAll({
                 where: {
-                    brandName: { [Op.like]: `%${search}%` },
+                    voucherName: { [Op.like]: `%${search}%` },
                 },
                 offset: +(limit * page),
                 limit: +limit,
-                include:[
-                  {
-                      model: Type,
-                  }],
             });
-            return res.status(200).send({ brands: brands });
+            return res.status(200).send({ vouchers: vouchers });
         } catch (err) {
             console.log(err);
             // Send Error
@@ -34,27 +30,27 @@ class BrandService {
         }
     };
 
-    // Create Brand
+    // Create Voucher
     create = async (req, res) => {
         const body = req.body;
 
-        // Create Brand
+        // Create Voucher
         try {
-            const brand = await Brand.create(body);
-            return res.status(200).send({ brand: brand });
+            const voucher = await Voucher.create(body);
+            return res.status(200).send({ voucher: voucher });
         } catch (err) {
             // Send Error
             if (err) return res.status(403).send({ error: err });
         }
     };
 
-    // Update Brand
+    // Update Voucher
     update = async (req, res) => {
         const body = req.body;
         try {
-            const brand = await Brand.update(body, { where: { id: body.id } });
+            const voucher = await Voucher.update(body, { where: { id: body.id } });
 
-            return res.status(200).send({ brand: brand });
+            return res.status(200).send({ voucher: voucher });
         } catch (err) {
             // Send Error
             return res.status(403).send({ error: err });
@@ -62,4 +58,4 @@ class BrandService {
     };
 }
 
-module.exports = new BrandService();
+module.exports = new VoucherService();

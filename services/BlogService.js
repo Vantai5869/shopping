@@ -1,32 +1,29 @@
 const { Op } = require("sequelize");
-const { Brand, Type } = require(__basedir + '/models');
-class BrandService {
+const db = require("../models");
+const { Blog } = require(__basedir + '/models');
+class BlogService {
     get = async (req, res) => {
         const { id } = req.params;
         try {
-            const brand = await Brand.findOne({ where: { id: id } });
-            res.status(200).send({ brand: brand });
+            const type = await Blog.findOne({ where: { id: id } });
+            res.status(200).send({ type: type });
         } catch (err) {
             if (err) res.status(403).send({ error: err });
         }
     };
 
-    // Get All Brands
+    // Get All Blogs
     getAll = async (req, res) => {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
-            const brands = await Brand.findAndCountAll({
+            const types = await Blog.findAndCountAll({
                 where: {
-                    brandName: { [Op.like]: `%${search}%` },
+                    typeName: { [Op.like]: `%${search}%` },
                 },
                 offset: +(limit * page),
                 limit: +limit,
-                include:[
-                  {
-                      model: Type,
-                  }],
             });
-            return res.status(200).send({ brands: brands });
+            return res.status(200).send({ types: types });
         } catch (err) {
             console.log(err);
             // Send Error
@@ -34,27 +31,27 @@ class BrandService {
         }
     };
 
-    // Create Brand
+    // Create Blog
     create = async (req, res) => {
         const body = req.body;
 
-        // Create Brand
+        // Create Blog
         try {
-            const brand = await Brand.create(body);
-            return res.status(200).send({ brand: brand });
+            const type = await Blog.create(body);
+            return res.status(200).send({ type: type });
         } catch (err) {
             // Send Error
             if (err) return res.status(403).send({ error: err });
         }
     };
 
-    // Update Brand
+    // Update Blog
     update = async (req, res) => {
         const body = req.body;
         try {
-            const brand = await Brand.update(body, { where: { id: body.id } });
+            const type = await Blog.update(body, { where: { id: body.id } });
 
-            return res.status(200).send({ brand: brand });
+            return res.status(200).send({ type: type });
         } catch (err) {
             // Send Error
             return res.status(403).send({ error: err });
@@ -62,4 +59,4 @@ class BrandService {
     };
 }
 
-module.exports = new BrandService();
+module.exports = new BlogService();
