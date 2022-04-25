@@ -13,11 +13,26 @@ class ProductService {
 
     // Get All Products
     getAll = async (req, res) => {
-        const { page = 0, limit = 10, search = "" } = req.query;
+        const { 
+            page = 0, 
+            limit = 10, 
+            search = "", 
+            type= "", 
+            priceMin=0, 
+            priceMax=99999999999999, 
+            sizeMin=null, 
+            sizeMax=null} = req.query;
         try {
             const products = await Product.findAndCountAll({
                 where: {
                     productName: { [Op.like]: `%${search}%` },
+                    productPrice:{[Op.and]: {
+                        [Op.gte]: priceMin,
+                        [Op.lte]: priceMax
+                    }}
+                    // productPrice: {
+                    //     $between: [priceMin, priceMax]
+                    // }
                 },
                 offset: +(limit * page),
                 limit: +limit,

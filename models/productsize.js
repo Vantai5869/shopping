@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   ProductSize.init({
-    productId: DataTypes.STRING,
-    sizeId: DataTypes.STRING,
+    productId: DataTypes.INTEGER,
+    sizeId: DataTypes.INTEGER,
     amount: DataTypes.INTEGER
   }, {
     sequelize,

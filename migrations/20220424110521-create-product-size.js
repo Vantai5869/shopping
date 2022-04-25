@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       sizeId: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       amount: {
         type: Sequelize.INTEGER
