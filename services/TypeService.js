@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const db = require("../models");
-const { Type } = require(__basedir + '/models');
+const { Type, Product } = require(__basedir + '/models');
 class TypeService {
     get = async (req, res) => {
         const { id } = req.params;
@@ -22,6 +22,11 @@ class TypeService {
                 },
                 offset: +(limit * page),
                 limit: +limit,
+                include:[
+                    {
+                        model: Product
+                    }
+                ]
             });
             return res.status(200).send({ types: types });
         } catch (err) {
