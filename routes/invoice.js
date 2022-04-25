@@ -10,4 +10,6 @@
  
  router.post('/update', InvoiceService.update);
  
+ router.delete('/delete/:id',authMiddleware, InvoiceService.delete);
+
  module.exports = router;

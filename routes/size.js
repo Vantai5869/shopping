@@ -10,4 +10,6 @@
  
  router.post('/update',authMiddleware, SizeService.update);
  
+ router.delete('/delete/:id', SizeService.delete);
+
  module.exports = router;

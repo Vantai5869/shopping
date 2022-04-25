@@ -9,5 +9,7 @@
  router.post('/create', ProductService.create);
  
  router.post('/update', ProductService.update);
+
+ router.delete('/delete/:id', ProductService.delete);
  
  module.exports = router;

@@ -10,4 +10,6 @@
  
  router.post('/update', ProductSizeService.update);
  
+ router.delete('/delete/:id', ProductSizeService.delete);
+
  module.exports = router;

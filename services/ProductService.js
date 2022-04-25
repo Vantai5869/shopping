@@ -56,6 +56,22 @@ class ProductService {
             return res.status(403).send({ error: err });
         }
     };
+
+    // Delete Product
+    delete = async (req, res) => {
+        const body = req.params;
+        try {
+            const product = await Product.destroy({
+                where: {
+                    id:body.id
+                }
+            })
+            return res.status(200).send({ product: product });
+        } catch (err) {
+            // Send Error
+            return res.status(403).send({ error: err });
+        }
+    };
 }
 
 module.exports = new ProductService();

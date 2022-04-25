@@ -10,4 +10,5 @@
  
  router.post('/update',authMiddleware, BlogService.update);
  
+ router.delete('/delete/:id',authMiddleware, BlogService.delete);
  module.exports = router;

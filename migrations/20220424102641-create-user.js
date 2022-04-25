@@ -28,6 +28,9 @@ module.exports = {
       role: {
         type: Sequelize.STRING,
       },
+      active:{
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -44,6 +47,7 @@ module.exports = {
       phoneNumber:'0346997607',
       role:"Admin",
       address:'Học viện kĩ thuật mật mã',
+      active:1,
       createdAt: new Date(),
       updatedAt: new Date()
     }])

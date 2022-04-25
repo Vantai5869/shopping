@@ -10,4 +10,6 @@
  
  router.post('/update',authMiddleware, CommentService.update);
  
+ router.delete('/delete/:id',authMiddleware, CommentService.delete);
+
  module.exports = router;

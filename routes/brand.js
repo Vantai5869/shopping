@@ -9,6 +9,8 @@
  router.post('/create',authMiddleware, BrandService.create);
  
  router.post('/update',authMiddleware, BrandService.update);
+
+ router.delete('/delete/:id',authMiddleware, BrandService.delete);
  
  module.exports = router;
 

@@ -57,6 +57,22 @@ class CommentService {
             return res.status(403).send({ error: err });
         }
     };
+
+    // Delete 
+    delete = async (req, res) => {
+        const body = req.params;
+        try {
+            const result = await Comment.destroy({
+                where: {
+                    id:body.id
+                }
+            })
+            return res.status(200).send({ result: result });
+        } catch (err) {
+            // Send Error
+            return res.status(403).send({ error: err });
+        }
+    };
 }
 
 module.exports = new CommentService();

@@ -9,5 +9,7 @@
  router.post('/create',authMiddleware, InvoiceDetailService.create);
  
  router.post('/update',authMiddleware, InvoiceDetailService.update);
+
+ router.delete('/delete/:id',authMiddleware, InvoiceDetailService.delete);
  
  module.exports = router;

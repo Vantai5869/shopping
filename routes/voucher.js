@@ -10,6 +10,8 @@
  
  router.post('/update',authMiddleware, VoucherService.update);
  
+ router.delete('/delete/:id', VoucherService.delete);
+
  module.exports = router;
 
 //  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11YWRvbmd5ZXV0aHVzb25nM3hAZ21haWwiLCJpYXQiOjE2NTA4MTI1NzQsImV4cCI6MTY1MTQxNzM3NH0.XdIpLET4XGeggYtc9iQx9AjbfsZt2uhXPMCAqluX70M
