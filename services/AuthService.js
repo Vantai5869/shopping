@@ -8,7 +8,6 @@ const nodemailer = require('nodemailer')
 const {
     google
   } = require('googleapis');
-const { json } = require('stream/consumers');
 dotenv.config()
 
 const register = async (req, res) => {

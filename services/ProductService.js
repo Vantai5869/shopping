@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Product } = require(__basedir + '/models');
+const { Product, ProductSize,InvoiceDetail,Sizes } = require(__basedir + '/models');
 class ProductService {
     get = async (req, res) => {
         const { id } = req.params;
@@ -17,23 +17,43 @@ class ProductService {
             page = 0, 
             limit = 10, 
             search = "", 
-            type= "", 
+            typeId= null, 
             priceMin=0, 
             priceMax=99999999999999, 
-            sizeMin=null, 
-            sizeMax=null} = req.query;
+            sizeId=null
+        } = req.query;
+        let condition={
+            productName: { [Op.like]: `%${search}%` },
+            productPrice:{[Op.and]: {
+                [Op.gte]: priceMin,
+                [Op.lte]: priceMax
+            }},
+            productPrice:{[Op.and]: {
+                [Op.gte]: priceMin,
+                [Op.lte]: priceMax
+            }},
+        }
+
+        let conditionInclude={}
+        if(typeId!=null){
+            condition={...condition, typeId}
+        }
+        if(sizeId!=null){
+            conditionInclude={...conditionInclude, sizeId}
+        }
         try {
+            
             const products = await Product.findAndCountAll({
-                where: {
-                    productName: { [Op.like]: `%${search}%` },
-                    productPrice:{[Op.and]: {
-                        [Op.gte]: priceMin,
-                        [Op.lte]: priceMax
-                    }}
-                    // productPrice: {
-                    //     $between: [priceMin, priceMax]
-                    // }
-                },
+                where:condition,
+                include:[
+                    {
+                        model: ProductSize,
+                        // where:{
+                        //     ...conditionInclude
+                        // }
+                    
+                    },
+                ],
                 offset: +(limit * page),
                 limit: +limit,
             });
