@@ -13,6 +13,8 @@ router.post('/register', AuthService.register);
 // Login Route
 router.post('/login', AuthService.login);
 router.post('/forgot-password', AuthService.forgotPassword);
+router.post('/update-password/:tokencheck', AuthService.updatePassword);
+
 
 
 
