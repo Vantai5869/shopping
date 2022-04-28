@@ -13,10 +13,13 @@ dotenv.config()
 const register = async (req, res) => {
 
     try {
-        const { fullName, email, password, phoneNumber, address, role } = req.body;
+        const { fullName, email, password, phoneNumber, address, role ,active } = req.body;
         const datauser = await db.User.findOne({ where: { email } });
         if (datauser) {
             return res.status(401).json({ message: "email của bạn đã tồn tại trong hệ thống" })
+        }
+        if(datauser && datauser.active ===0 ){
+            return res.status(401).json({ message: "Tài khoản bạn bị khóa" })
         }
         const hasspassword = await bcrypt.hash(password, saltRounds)
         const roleEmail = role ? role : 'user'
@@ -26,12 +29,13 @@ const register = async (req, res) => {
             password: hasspassword,
             phoneNumber,
             address,
-            role: roleEmail
+            role: roleEmail,
+            active:active
         })
 
         return res.json({ message: "Tạo tài khoản thành công" })
 
-    } catch (err) {
+    } catch (error) {
         return res.status(500).json({ message: error.message })
     }
 }
