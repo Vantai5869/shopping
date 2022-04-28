@@ -6,11 +6,11 @@
  
  router.get('/:id', BrandService.get);
  
- router.post('/create',authMiddleware, BrandService.create);
+ router.post('/create', BrandService.create);
  
  router.post('/update', BrandService.update);
 
- router.delete('/delete/:id',authMiddleware, BrandService.delete);
+ router.delete('/delete/:id', BrandService.delete);
  
  module.exports = router;
 

@@ -1,10 +1,4 @@
-/**
- * author: larry amiel tablando
- * link: github.com/larryamiel
- * description: main index file for the API of chirodev
- */
 
-// Declaring Global Variables
 global.__basedir = __dirname;
 
 // Declaring Environment

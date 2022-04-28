@@ -64,6 +64,7 @@ class BrandService {
     // Delete 
     delete = async (req, res) => {
         const body = req.params;
+        console.log(body)
         try {
             const result = await Brand.destroy({
                 where: {
