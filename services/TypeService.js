@@ -14,11 +14,16 @@ class TypeService {
 
     // Get All Types
     getAll = async (req, res) => {
-        const { page = 0, limit = 10, search = "" } = req.query;
+        const { page = 0, limit = 10, search = "", brandId=null } = req.query;
+        let condition={};
+        if(brandId!=null){
+            condition={...condition, brandId}
+        }
         try {
             const types = await Type.findAndCountAll({
                 where: {
                     typeName: { [Op.like]: `%${search}%` },
+                    ...condition
                 },
                 offset: +(limit * page),
                 limit: +limit,

@@ -25,7 +25,7 @@ const app = express();
 /** MIDDLEWARES */
 
 // CORS Middleware
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "*", credentials: true }));
 
 // BodyParser Middleware
 app.use(express.json());

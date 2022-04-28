@@ -2,13 +2,13 @@
  const BrandService = require('../services/BrandService');
  const authMiddleware = require('../middlewares/authMiddleware')
  
- router.get('/all',authMiddleware, BrandService.getAll);
+ router.get('/all', BrandService.getAll);
  
- router.get('/:id',authMiddleware, BrandService.get);
+ router.get('/:id', BrandService.get);
  
  router.post('/create',authMiddleware, BrandService.create);
  
- router.post('/update',authMiddleware, BrandService.update);
+ router.post('/update', BrandService.update);
 
  router.delete('/delete/:id',authMiddleware, BrandService.delete);
  
