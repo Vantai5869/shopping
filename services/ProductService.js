@@ -20,7 +20,8 @@ class ProductService {
             typeId= null, 
             priceMin=0, 
             priceMax=99999999999999, 
-            sizeId=null
+            sizeId=null,
+            sale=-1
         } = req.query;
         let condition={
             productName: { [Op.like]: `%${search}%` },
@@ -32,6 +33,9 @@ class ProductService {
                 [Op.gte]: priceMin,
                 [Op.lte]: priceMax
             }},
+            discount:{
+                [Op.gte]: sale,
+            }
         }
 
         let conditionInclude={}
@@ -39,7 +43,6 @@ class ProductService {
             condition={...condition, typeId}
         }
         if(sizeId!=null){
-            console.log(sizeId.split(","))
             conditionInclude={...conditionInclude,sizeId:{
                 [Op.in]: sizeId.split(",")
             } }
@@ -47,17 +50,15 @@ class ProductService {
         try {
             
             const products = await Product.findAndCountAll({
+                order: [ [ 'createdAt', 'DESC' ]],
                 where:condition,
                 include:[
                     {
                         model: ProductSize,
-                        where:{
-                            ...conditionInclude
-                        }
-                    
+                        where:conditionInclude
                     },
                 ],
-                offset: +(limit * page),
+                offset:+(limit * page),
                 limit: +limit,
             });
             return res.status(200).send({ products: products });

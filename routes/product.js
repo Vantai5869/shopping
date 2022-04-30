@@ -6,10 +6,10 @@
  
  router.get('/:id', ProductService.get);
  
- router.post('/create',authMiddleware, ProductService.create);
+ router.post('/create', ProductService.create);
  
- router.post('/update',authMiddleware, ProductService.update);
+ router.post('/update', ProductService.update);
 
- router.delete('/delete/:id',authMiddleware, ProductService.delete);
+ router.delete('/delete/:id', ProductService.delete);
  
  module.exports = router;
