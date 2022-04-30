@@ -6,7 +6,7 @@
  
  router.get('/:id',authMiddleware, SizeService.get);
  
- router.post('/create',authMiddleware, SizeService.create);
+ router.post('/create', SizeService.create);
  
  router.post('/update',authMiddleware, SizeService.update);
  

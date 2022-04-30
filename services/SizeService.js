@@ -1,9 +1,9 @@
-const { Size } = require(__basedir + '/models');
+const { Sizes } = require(__basedir + '/models');
 class SizeService {
     get = async (req, res) => {
         const { id } = req.params;
         try {
-            const size = await Size.findOne({ where: { id: id } });
+            const size = await Sizes.findOne({ where: { id: id } });
             res.status(200).send({ size: size });
         } catch (err) {
             if (err) res.status(403).send({ error: err });
@@ -14,7 +14,7 @@ class SizeService {
     getAll = async (req, res) => {
         const { page = 0, limit = 10 } = req.query;
         try {
-            const sizes = await Size.findAndCountAll({
+            const sizes = await Sizes.findAndCountAll({
                 offset: +(limit * page),
                 limit: +limit,
             });
@@ -32,7 +32,7 @@ class SizeService {
 
         // Create Size
         try {
-            const size = await Size.create(body);
+            const size = await Sizes.create(body);
             return res.status(200).send({ size: size });
         } catch (err) {
             // Send Error
@@ -44,7 +44,7 @@ class SizeService {
     update = async (req, res) => {
         const body = req.body;
         try {
-            const size = await Size.update(body, { where: { id: body.id } });
+            const size = await Sizes.update(body, { where: { id: body.id } });
 
             return res.status(200).send({ size: size });
         } catch (err) {
@@ -57,7 +57,7 @@ class SizeService {
     delete = async (req, res) => {
         const body = req.params;
         try {
-            const result = await Size.destroy({
+            const result = await Sizes.destroy({
                 where: {
                     id:body.id
                 }

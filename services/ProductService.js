@@ -39,7 +39,10 @@ class ProductService {
             condition={...condition, typeId}
         }
         if(sizeId!=null){
-            conditionInclude={...conditionInclude, sizeId}
+            console.log(sizeId.split(","))
+            conditionInclude={...conditionInclude,sizeId:{
+                [Op.in]: sizeId.split(",")
+            } }
         }
         try {
             
@@ -48,9 +51,9 @@ class ProductService {
                 include:[
                     {
                         model: ProductSize,
-                        // where:{
-                        //     ...conditionInclude
-                        // }
+                        where:{
+                            ...conditionInclude
+                        }
                     
                     },
                 ],
