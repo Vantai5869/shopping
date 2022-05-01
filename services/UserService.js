@@ -1,29 +1,29 @@
 const { Op } = require("sequelize");
 const db = require("../models");
-const { Blog } = require(__basedir + '/models');
-class BlogService {
+const { User } = require(__basedir + '/models');
+class UserService {
     get = async (req, res) => {
         const { id } = req.params;
         try {
-            const blog = await Blog.findOne({ where: { id: id } });
-            res.status(200).send({ blog: blog });
+            const user = await User.findOne({ where: { id: id } });
+            res.status(200).send({ user: user });
         } catch (err) {
             if (err) res.status(403).send({ error: err });
         }
     };
 
-    // Get All Blogs
+    // Get All Users
     getAll = async (req, res) => {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
-            const blogs = await Blog.findAndCountAll({
+            const users = await User.findAndCountAll({
                 where: {
-                    title: { [Op.like]: `%${search}%` },
+                    fullName: { [Op.like]: `%${search}%` },
                 },
                 offset: +(limit * page),
                 limit: +limit,
             });
-            return res.status(200).send({ blogs: blogs });
+            return res.status(200).send({ users: users });
         } catch (err) {
             console.log(err);
             // Send Error
@@ -31,27 +31,27 @@ class BlogService {
         }
     };
 
-    // Create Blog
+    // Create User
     create = async (req, res) => {
         const body = req.body;
 
-        // Create Blog
+        // Create User
         try {
-            const blog = await Blog.create(body);
-            return res.status(200).send({ blog: blog });
+            const user = await User.create(body);
+            return res.status(200).send({ user: user });
         } catch (err) {
             // Send Error
             if (err) return res.status(403).send({ error: err });
         }
     };
 
-    // Update Blog
+    // Update User
     update = async (req, res) => {
         const body = req.body;
         try {
-            const blog = await Blog.update(body, { where: { id: body.id } });
+            const user = await User.update(body, { where: { id: body.id } });
 
-            return res.status(200).send({ blog: blog });
+            return res.status(200).send({ user: user });
         } catch (err) {
             // Send Error
             return res.status(403).send({ error: err });
@@ -62,7 +62,7 @@ class BlogService {
     delete = async (req, res) => {
         const body = req.params;
         try {
-            const result = await Blog.destroy({
+            const result = await User.destroy({
                 where: {
                     id:body.id
                 }
@@ -75,4 +75,4 @@ class BlogService {
     };
 }
 
-module.exports = new BlogService();
+module.exports = new UserService();
