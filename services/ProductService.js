@@ -40,7 +40,9 @@ class ProductService {
 
         let conditionInclude={}
         if(typeId!=null){
-            condition={...condition, typeId}
+            condition={...condition, typeId:{
+                [Op.in]: typeId.split(",")
+            }}
         }
         if(sizeId!=null){
             conditionInclude={...conditionInclude,sizeId:{
