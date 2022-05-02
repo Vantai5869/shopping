@@ -2,6 +2,19 @@ const { Op } = require("sequelize");
 const db = require("../models");
 const { User } = require(__basedir + '/models');
 class UserService {
+    
+    getMe = async (req, res) => {
+       if(!req.user){
+        if (err) res.status(403);
+       }
+        try {
+            const user = await User.findOne({ where: { id: req.user.email.idUser } });
+            res.status(200).send({ user: user });
+        } catch (err) {
+            if (err) res.status(403).send({ error: err });
+        }
+    };
+
     get = async (req, res) => {
         const { id } = req.params;
         try {

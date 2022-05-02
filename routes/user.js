@@ -4,6 +4,8 @@
  
  router.get('/all', UserService.getAll);
  
+ router.get('/me',authMiddleware, UserService.getMe);
+
  router.get('/:id', UserService.get);
  
  router.post('/create', UserService.create);
