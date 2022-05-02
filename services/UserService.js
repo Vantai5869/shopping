@@ -71,6 +71,21 @@ class UserService {
         }
     };
 
+    // Update User
+    updateMe = async (req, res) => {
+        const body = req.body;
+        try {
+            const user = await User.update(body, { where: { id: req.user.email.idUser } });
+            return res.status(200).send({ user: user });
+        } catch (err) {
+            console.log("============");
+            console.log(body);
+            console.log(err);
+            // Send Error
+            return res.status(403).send({ error: err });
+        }
+    };
+
     // Delete 
     delete = async (req, res) => {
         const body = req.params;

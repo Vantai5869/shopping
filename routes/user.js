@@ -4,13 +4,17 @@
  
  router.get('/all', UserService.getAll);
  
+//  authMiddleware bat buoc phai co
  router.get('/me',authMiddleware, UserService.getMe);
 
  router.get('/:id', UserService.get);
  
  router.post('/create', UserService.create);
  
- router.post('/update', UserService.update);
+ //  authMiddleware bat buoc phai co
+ router.post('/updateMe',authMiddleware, UserService.updateMe);
+
+//  router.post('/update', UserService.update);
  
  router.delete('/delete/:id', UserService.delete);
  module.exports = router;
