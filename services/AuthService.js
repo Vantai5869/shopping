@@ -146,6 +146,27 @@ const updatePassword =async(req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+
+const getUser = async(req , res)=>{
+    try {
+        const data = await db.User.findAll()
+        return res.json({ message:data })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+
+const activeUser = async(req , res)=>{
+    const {id , active} = req.body
+    console.log(id  ,active)
+    try {
+        const data = await db.User.update(	{active:active }, { where: { id:id } });
+        return res.json({ message:data })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+
 const createAccessToken = (email, id) => {
     return jwt.sign({ email, id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7d' })
 }
@@ -153,5 +174,7 @@ module.exports = {
     register,
     login,
     forgotPassword,
-    updatePassword
+    updatePassword,
+    getUser,
+    activeUser
 };
