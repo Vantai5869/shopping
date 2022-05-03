@@ -5,8 +5,8 @@ class BlogService {
     get = async (req, res) => {
         const { id } = req.params;
         try {
-            const type = await Blog.findOne({ where: { id: id } });
-            res.status(200).send({ type: type });
+            const blog = await Blog.findOne({ where: { id: id } });
+            res.status(200).send({ blog: blog });
         } catch (err) {
             if (err) res.status(403).send({ error: err });
         }
@@ -16,14 +16,14 @@ class BlogService {
     getAll = async (req, res) => {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
-            const types = await Blog.findAndCountAll({
+            const blogs = await Blog.findAndCountAll({
                 where: {
-                    typeName: { [Op.like]: `%${search}%` },
+                    title: { [Op.like]: `%${search}%` },
                 },
                 offset: +(limit * page),
                 limit: +limit,
             });
-            return res.status(200).send({ types: types });
+            return res.status(200).send({ blogs: blogs });
         } catch (err) {
             console.log(err);
             // Send Error
@@ -37,8 +37,8 @@ class BlogService {
 
         // Create Blog
         try {
-            const type = await Blog.create(body);
-            return res.status(200).send({ type: type });
+            const blog = await Blog.create(body);
+            return res.status(200).send({ blog: blog });
         } catch (err) {
             // Send Error
             if (err) return res.status(403).send({ error: err });
@@ -49,9 +49,9 @@ class BlogService {
     update = async (req, res) => {
         const body = req.body;
         try {
-            const type = await Blog.update(body, { where: { id: body.id } });
+            const blog = await Blog.update(body, { where: { id: body.id } });
 
-            return res.status(200).send({ type: type });
+            return res.status(200).send({ blog: blog });
         } catch (err) {
             // Send Error
             return res.status(403).send({ error: err });

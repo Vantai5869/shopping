@@ -20,7 +20,8 @@ class ProductService {
             typeId= null, 
             priceMin=0, 
             priceMax=99999999999999, 
-            sizeId=null
+            sizeId=null,
+            sale=-1
         } = req.query;
         let condition={
             productName: { [Op.like]: `%${search}%` },
@@ -32,32 +33,42 @@ class ProductService {
                 [Op.gte]: priceMin,
                 [Op.lte]: priceMax
             }},
+            discount:{
+                [Op.gte]: sale,
+            }
         }
 
-        let conditionInclude={}
+        let conditionInclude=[
+            {
+                model: ProductSize,
+                // where:conditionInclude
+            },
+        ]
         if(typeId!=null){
-            condition={...condition, typeId}
+            condition={...condition, typeId:{
+                [Op.in]: typeId.split(",")
+            }}
         }
         if(sizeId!=null){
-            console.log(sizeId.split(","))
-            conditionInclude={...conditionInclude,sizeId:{
-                [Op.in]: sizeId.split(",")
-            } }
+            const w= {
+                where:{
+                     sizeId:{
+                    [Op.in]: sizeId.split(",")
+                    } 
+                }
+            }
+            conditionInclude={
+                ...conditionInclude,
+                ...w
+            }
         }
         try {
             
             const products = await Product.findAndCountAll({
+                order: [ [ 'createdAt', 'DESC' ]],
                 where:condition,
-                include:[
-                    {
-                        model: ProductSize,
-                        where:{
-                            ...conditionInclude
-                        }
-                    
-                    },
-                ],
-                offset: +(limit * page),
+                include:conditionInclude,
+                offset:+(limit * page),
                 limit: +limit,
             });
             return res.status(200).send({ products: products });

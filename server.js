@@ -46,6 +46,7 @@ const rInvoice = require(__basedir + '/routes/invoice');
 const rInvoiceDetail = require(__basedir + '/routes/invoiceDetail');
 const rBlog = require(__basedir + '/routes/blog');
 const rVoucher= require(__basedir + '/routes/voucher');
+const rUser= require(__basedir + '/routes/user');
 
 /** ROUTES */
 
@@ -61,6 +62,7 @@ app.use('/api/invoice', rInvoice);
 app.use('/api/invoiceDetail', rInvoiceDetail);
 app.use('/api/blog', rBlog);
 app.use('/api/voucher', rVoucher);
+app.use('/api/user', rUser);
 
 /** RUN THE API ON PORT */
 app.listen(process.env.PORT||5000, async () => {
