@@ -38,28 +38,36 @@ class ProductService {
             }
         }
 
-        let conditionInclude={}
+        let conditionInclude=[
+            {
+                model: ProductSize,
+                // where:conditionInclude
+            },
+        ]
         if(typeId!=null){
             condition={...condition, typeId:{
                 [Op.in]: typeId.split(",")
             }}
         }
         if(sizeId!=null){
-            conditionInclude={...conditionInclude,sizeId:{
-                [Op.in]: sizeId.split(",")
-            } }
+            const w= {
+                where:{
+                     sizeId:{
+                    [Op.in]: sizeId.split(",")
+                    } 
+                }
+            }
+            conditionInclude={
+                ...conditionInclude,
+                ...w
+            }
         }
         try {
             
             const products = await Product.findAndCountAll({
                 order: [ [ 'createdAt', 'DESC' ]],
                 where:condition,
-                include:[
-                    {
-                        model: ProductSize,
-                        where:conditionInclude
-                    },
-                ],
+                include:conditionInclude,
                 offset:+(limit * page),
                 limit: +limit,
             });
