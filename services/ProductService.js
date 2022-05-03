@@ -65,6 +65,7 @@ class ProductService {
         try {
             
             const products = await Product.findAndCountAll({
+                distinct: true,
                 order: [ [ 'createdAt', 'DESC' ]],
                 where:condition,
                 include:conditionInclude,

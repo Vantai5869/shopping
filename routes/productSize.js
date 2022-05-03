@@ -4,6 +4,7 @@
  
  router.get('/all', ProductSizeService.getAll);
  
+//  get all size of product :id is productId
  router.get('/:id', ProductSizeService.get);
  
  router.post('/create', ProductSizeService.create);

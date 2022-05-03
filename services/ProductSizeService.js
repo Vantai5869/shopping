@@ -1,11 +1,26 @@
 const { Op } = require("sequelize");
-const { ProductSize } = require(__basedir + '/models');
+const { ProductSize, Sizes } = require(__basedir + '/models');
 class ProductSizeService {
     get = async (req, res) => {
         const { id } = req.params;
         try {
-            const productSize = await ProductSize.findOne({ where: { id: id } });
-            res.status(200).send({ productSize: productSize });
+            const productSize = await ProductSize.findAndCountAll({
+                
+                 where: { productId: id } ,
+                 attributes:[],
+                 include:[
+                     {
+                         model: Sizes,
+                         attributes: ["sizeNumber"]
+                     }
+                 ],
+                 raw: true,
+                 nest: true,
+            });
+            // const size= productSize.rows;
+            // console.log(size)
+            const sizes= productSize?.rows?.map(item=>item?.Size?.sizeNumber);
+            res.status(200).send({ sizes: sizes });
         } catch (err) {
             if (err) res.status(403).send({ error: err });
         }
