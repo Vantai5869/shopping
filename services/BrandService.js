@@ -13,7 +13,7 @@ class BrandService {
 
     // Get All Brands
     getAll = async (req, res) => {
-        const { page = 0, limit = 10, search = "" } = req.query;
+        const { page = 0, limit = 100, search = "" } = req.query;
         try {
             const brands = await Brand.findAndCountAll({
                 where: {

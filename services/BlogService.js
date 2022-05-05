@@ -14,7 +14,7 @@ class BlogService {
 
     // Get All Blogs
     getAll = async (req, res) => {
-        const { page = 0, limit = 10, search = "" } = req.query;
+        const { page = 0, limit = 50, search = "" } = req.query;
         try {
             const blogs = await Blog.findAndCountAll({
                 where: {

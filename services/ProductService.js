@@ -57,10 +57,16 @@ class ProductService {
                     } 
                 }
             }
-            conditionInclude={
-                ...conditionInclude,
-                ...w
-            }
+            conditionInclude=[
+                {
+                    model: ProductSize,
+                    where:{
+                        sizeId:{
+                       [Op.in]: sizeId.split(",")
+                       } 
+                   }
+                }
+            ]
         }
         try {
             
