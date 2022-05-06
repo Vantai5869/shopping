@@ -16,6 +16,7 @@ class VoucherService {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
             const vouchers = await Voucher.findAndCountAll({
+                distinct: true,
                 where: {
                     voucherName: { [Op.like]: `%${search}%` },
                 },

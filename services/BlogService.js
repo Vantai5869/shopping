@@ -17,6 +17,7 @@ class BlogService {
         const { page = 0, limit = 50, search = "" } = req.query;
         try {
             const blogs = await Blog.findAndCountAll({
+                distinct: true,
                 where: {
                     title: { [Op.like]: `%${search}%` },
                 },

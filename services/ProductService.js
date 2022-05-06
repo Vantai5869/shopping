@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Product, ProductSize,InvoiceDetail,Sizes } = require(__basedir + '/models');
+const { Product, ProductSize,InvoiceDetail,Sizes, Comment, User} = require(__basedir + '/models');
 class ProductService {
     get = async (req, res) => {
         const { id } = req.params;
@@ -10,6 +10,37 @@ class ProductService {
             if (err) res.status(403).send({ error: err });
         }
     };
+
+    // Get All comment of product
+    getComments = async (req, res) => {
+        try {
+             const comments = await Product.findOne({
+
+                where: { id: req.params.productId } ,
+                distinct: true,
+                order: [ [ 'createdAt', 'DESC' ]],
+                include:[
+                    {
+                        model:Comment,
+                        include:[
+                            {
+                                model:User
+                            }
+                        ]
+
+                    }
+                ],
+                
+            });
+            return res.status(200).send({ comments: comments });
+        } catch (err) {
+            console.log(err);
+            // Send Error
+            if (err) res.sendStatus(403);
+        }
+            
+           
+    }
 
     // Get All Products
     getAll = async (req, res) => {

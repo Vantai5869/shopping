@@ -16,6 +16,7 @@ class InvoiceService {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
             const invoices = await Invoice.findAndCountAll({
+                distinct: true,
                 where: {
                     invoiceName: { [Op.like]: `%${search}%` },
                 },

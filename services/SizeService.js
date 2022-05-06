@@ -15,6 +15,7 @@ class SizeService {
         const { page = 0, limit = 10 } = req.query;
         try {
             const sizes = await Sizes.findAndCountAll({
+                distinct: true,
                 offset: +(limit * page),
                 limit: +limit,
             });

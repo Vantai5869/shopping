@@ -30,6 +30,7 @@ class UserService {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
             const users = await User.findAndCountAll({
+                distinct: true,
                 where: {
                     fullName: { [Op.like]: `%${search}%` },
                 },

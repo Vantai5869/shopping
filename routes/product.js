@@ -2,6 +2,8 @@
  const ProductService = require('../services/ProductService');
  const authMiddleware = require('../middlewares/authMiddleware')
  
+ router.get('/comments/:productId', ProductService.getComments);
+
  router.get('/all', ProductService.getAll);
  
  router.get('/:id', ProductService.get);

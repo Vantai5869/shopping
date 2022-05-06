@@ -5,7 +5,7 @@ class ProductSizeService {
         const { id } = req.params;
         try {
             const productSize = await ProductSize.findAndCountAll({
-                
+                distinct: true,
                  where: { productId: id } ,
                  attributes:[],
                  include:[

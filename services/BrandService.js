@@ -16,6 +16,7 @@ class BrandService {
         const { page = 0, limit = 100, search = "" } = req.query;
         try {
             const brands = await Brand.findAndCountAll({
+                distinct: true,
                 where: {
                     brandName: { [Op.like]: `%${search}%` },
                 },

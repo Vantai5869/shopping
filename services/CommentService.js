@@ -17,6 +17,7 @@ class CommentService {
         const { page = 0, limit = 10, search = "" } = req.query;
         try {
             const comments = await Comment.findAndCountAll({
+                distinct: true,
                 where: {
                     commentName: { [Op.like]: `%${search}%` },
                 },

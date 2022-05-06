@@ -21,6 +21,7 @@ class TypeService {
         }
         try {
             const types = await Type.findAndCountAll({
+                distinct: true,
                 where: {
                     typeName: { [Op.like]: `%${search}%` },
                     ...condition
