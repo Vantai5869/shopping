@@ -2,9 +2,11 @@
  const TypeService = require('../services/TypeService');
  const authMiddleware = require('../middlewares/authMiddleware')
  
- router.get('/all', authMiddleware, TypeService.getAll);
+ router.get('/get-brand/:id', TypeService.getBrand);
+
+ router.get('/all', TypeService.getAll);
  
- router.get('/:id',authMiddleware, TypeService.get);
+ router.get('/:id', TypeService.get);
  
  router.post('/create',authMiddleware, TypeService.create);
  

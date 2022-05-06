@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const db = require("../models");
-const { Type, Product } = require(__basedir + '/models');
+const { Type, Product, Brand} = require(__basedir + '/models');
 class TypeService {
     get = async (req, res) => {
         const { id } = req.params;
@@ -37,6 +37,27 @@ class TypeService {
         } catch (err) {
             console.log(err);
             // Send Error
+            if (err) res.sendStatus(403);
+        }
+    };
+
+    // Get All Types
+    getBrand = async (req, res) => {
+        const typeId = req.params.id
+        try {
+            const types = await Type.findOne({
+                where: {
+                    id: typeId
+                },
+                include:[
+                    {
+                        model: Brand
+                    }
+                ]
+            });
+            return res.status(200).send({ types: types });
+        } catch (err) {
+            console.log(err);
             if (err) res.sendStatus(403);
         }
     };
