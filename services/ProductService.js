@@ -72,6 +72,11 @@ class ProductService {
         let conditionInclude=[
             {
                 model: ProductSize,
+                include:[
+                    {
+                        model:Sizes
+                    }
+                ]
                 // where:conditionInclude
             },
         ]
@@ -95,7 +100,8 @@ class ProductService {
                         sizeId:{
                        [Op.in]: sizeId.split(",")
                        } 
-                   }
+                   },
+                  
                 }
             ]
         }
